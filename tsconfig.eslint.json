@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "@types",
+    "config",
+    "src",
+    "scripts",
+    "__mocks__",
+    "**/*.js",
+    "**/.*.js"
+  ]
+}
