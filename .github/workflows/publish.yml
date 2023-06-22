@@ -30,8 +30,8 @@ jobs:
       - name: Bump version and create a tag
         id: create_new_tag
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          git config --local user.email "joelngozo@gmail.com"
+          git config --local user.name "@JoelFickson"
           npm version minor -m "Bump version to %s"
           echo "NEW_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
           git push origin HEAD:master --follow-tags
