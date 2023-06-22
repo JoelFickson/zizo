@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  build:
+  build-version-publish:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,41 +17,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          
+
       - name: Install dependencies
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile
 
       - name: Build TypeScript
         run: yarn build
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-artifacts
-          path: dist/
-
-  version:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: build-artifacts
-          path: dist/
-
-      - name: Install dependencies
-        run: yarn --frozen-lockfile
       - name: Install jq
         run: sudo apt-get install jq
 
@@ -60,29 +32,15 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          yarn version --minor --no-git-tag-version
+          npm version minor -m "Bump version to %s"
           echo "NEW_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
-          git tag v$NEW_VERSION
+          git push origin HEAD:master --follow-tags
 
-  publish:
-    needs: version
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
+      - name: Set up Node.js for publish
         uses: actions/setup-node@v3
         with:
           node-version: 18
           registry-url: 'https://registry.npmjs.org'
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: build-artifacts
-          path: dist/
 
       - name: Publish to npm
         run: npm publish
