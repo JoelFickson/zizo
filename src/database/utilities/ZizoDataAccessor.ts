@@ -4,16 +4,42 @@ import { DatabaseOperations } from '../../../@types/database/DatabaseOperations'
 import { SelectableDataTypes } from '../../../@types/database/Data';
 import CustomError from '../../misc/Error';
 
+/**
+ * ZizoDataAccessor class that implements the DatabaseOperations interface.
+ * @implements {DatabaseOperations}
+ */
 class ZizoDataAccessor implements DatabaseOperations {
+	/**
+	 * @private
+	 * @type {Knex}
+	 */
 	private db: Knex;
 
+	/**
+	 * @private
+	 * @type {bunyan}
+	 */
 	private log: bunyan;
+
+	/**
+	 * Constructs a new ZizoDataAccessor.
+	 * @param {Knex} db - The database connection.
+	 * @param {bunyan} logger - The logger.
+	 */
 
 	constructor(db: Knex, logger: bunyan) {
 		this.db = db;
 		this.log = logger;
 	}
 
+	/**
+	 * Checks if a record exists in the database.
+	 * @async
+	 * @param {string} table - The table to check.
+	 * @param {string} column - The column to check.
+	 * @param {string} value - The value to check.
+	 * @returns {Promise<boolean>} - Returns true if the record exists, false otherwise.
+	 */
 	async recordExists(table: string, column: string, value: string): Promise<boolean> {
 		try {
 			const count = await this.db(table)
@@ -28,6 +54,13 @@ class ZizoDataAccessor implements DatabaseOperations {
 		}
 	}
 
+	/**
+	 * Saves a record to the database.
+	 * @async
+	 * @param {string} table - The table to save to.
+	 * @param {T[] | T} values - The values to save.
+	 * @returns {Promise<T>} - Returns the saved record.
+	 */
 	async save<T>(table: string, values: T[] | T): Promise<T> {
 
 		if (!table) {
@@ -48,6 +81,13 @@ class ZizoDataAccessor implements DatabaseOperations {
 		}
 	}
 
+	/**
+	 * Selects a record from the database.
+	 * @param {string} table - The table to select from.
+	 * @param {string} column - The column to select.
+	 * @param {string} value - The value to select.
+	 * @returns {Promise<T>} - Returns the selected record.
+	 */
 	selectRecord<T>(table: string, column: string, value: string): Promise<T> {
 		try {
 			return this.db(table)
@@ -59,6 +99,14 @@ class ZizoDataAccessor implements DatabaseOperations {
 		}
 	}
 
+	/**
+	 * Updates a record in the database.
+	 * @async
+	 * @param {string} table - The table to update.
+	 * @param {number | string} id - The id of the record to update.
+	 * @param {Partial<T>} values - The values to update.
+	 * @returns {Promise<T>} - Returns the updated record.
+	 */
 	async updateRecord<T>(table: string, id: number | string, values: Partial<T>): Promise<T> {
 		try {
 			return <T>this.db(table)
@@ -72,6 +120,13 @@ class ZizoDataAccessor implements DatabaseOperations {
 		}
 	}
 
+	/**
+	 * Selects all records from the database that match the given value.
+	 * @param {string} table - The table to select from.
+	 * @param {string} column - The column to select.
+	 * @param {SelectableDataTypes} value - The value to select.
+	 * @returns {Promise<T[]>} - Returns the selected records.
+	 */
 	selectAll<T>(table: string, column: string, value: SelectableDataTypes): Promise<T[]> {
 		try {
 			return this.db(table)
