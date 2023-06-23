@@ -1,14 +1,15 @@
 {
   "name": "zizo",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "0.0.0-development",
+  "main": "dist/index.js",
   "repository": "git@github.com:JoelFickson/zizo.git",
   "author": "Joel Fickson <Joelfickson@gmail.com>",
   "license": "MIT",
   "scripts": {
     "build": "tsc && tsc-alias",
     "lint": "eslint --ext .ts, src",
-    "format": "prettier --write 'src/**/*.ts'"
+    "format": "prettier --write 'src/**/*.ts'",
+    "semantic-release": "semantic-release"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
@@ -42,6 +43,10 @@
     "nodemon": "^2.0.22",
     "prettier": "^2.8.7",
     "tsc-alias": "^1.8.6",
-    "typescript": "^5.1.3"
+    "typescript": "^5.1.3",
+    "semantic-release": "^21.0.5"
+  },
+  "exports": {
+    ".": "./dist/index.js"
   }
 }
