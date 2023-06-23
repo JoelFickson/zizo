@@ -1,6 +1,6 @@
 {
   "name": "zizo",
-  "version": "0.0.0-development",
+  "version": "1.0.0",
   "main": "dist/index.js",
   "repository": "git@github.com:JoelFickson/zizo.git",
   "author": "Joel Fickson <Joelfickson@gmail.com>",
