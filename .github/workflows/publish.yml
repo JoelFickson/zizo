@@ -37,7 +37,9 @@ jobs:
         run: yarn
 
       - name: Push to NPM Registry
-        run: yarn semantic-release
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx semantic-release
 
 
 
