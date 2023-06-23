@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  build-version-publish:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,7 +21,8 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-  publish-to-npm:
+  publish:
+    needs: [ 'build' ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
