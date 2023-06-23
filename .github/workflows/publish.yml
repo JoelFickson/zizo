@@ -21,30 +21,24 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      - name: Build TypeScript
-        run: yarn build
+  publish-to-npm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Install jq
-        run: sudo apt-get install jq
-
-      - name: Bump version and create a tag
-        id: create_new_tag
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "@JoelFickson"
-          npm version minor -m "Bump version to %s"
-          echo "NEW_VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
-          git push origin HEAD:master --follow-tags
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
-
-      - name: Set up Node.js for publish
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          registry-url: 'https://registry.npmjs.org'
 
-      - name: Publish to npm
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Install dependencies
+        run: yarn
+
+      - name: Push to NPM Registry
+        run: yarn semantic-release
+
+
+
+
+
