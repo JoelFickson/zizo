@@ -1,22 +1,23 @@
 class CustomError<T> extends Error {
-    private readonly data: T;
-    private readonly statusCode: number;
+	private readonly data: T;
 
-    constructor(message: string, statusCode: number, data?: any) {
-        super(message);
-        this.name = this.constructor.name;
-        this.statusCode = statusCode;
-        this.data = data;
-        Object.setPrototypeOf(this, new.target.prototype);
-    }
+	private readonly statusCode: number;
 
-    getStatusCode(): number {
-        return this.statusCode;
-    }
+	constructor(message: string, statusCode: number, data?: any) {
+		super(message);
+		this.name = this.constructor.name;
+		this.statusCode = statusCode;
+		this.data = data;
+		Object.setPrototypeOf(this, new.target.prototype);
+	}
 
-    getData(): T {
-        return this.data;
-    }
+	getStatusCode(): number {
+		return this.statusCode;
+	}
+
+	getData(): T {
+		return this.data;
+	}
 }
 
 export default CustomError;

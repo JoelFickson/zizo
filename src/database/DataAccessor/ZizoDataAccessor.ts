@@ -1,7 +1,6 @@
 import { Knex } from 'knex';
 import bunyan from 'bunyan';
-import { DatabaseOperations } from '../../../@types/database/DatabaseOperations';
-import { SelectableDataTypes } from '../../../@types/database/Data';
+
 import CustomError from '../../misc/Error';
 
 /**
@@ -131,6 +130,15 @@ class ZizoDataAccessor implements DatabaseOperations {
 		try {
 			return this.db(table)
 				.where(column, value).returning('*');
+		} catch (error) {
+			this.log.error(`Error checking if record exists in table ${table}:`, error);
+			throw new CustomError(`DATABASE_ERROR⚠️:: Error checking if record exists in table ${table}:`, 400, error);
+		}
+	}
+
+	getAllRecords<T>(table: string): Promise<T[]> {
+		try {
+			return this.db(table).returning('*');
 		} catch (error) {
 			this.log.error(`Error checking if record exists in table ${table}:`, error);
 			throw new CustomError(`DATABASE_ERROR⚠️:: Error checking if record exists in table ${table}:`, 400, error);
