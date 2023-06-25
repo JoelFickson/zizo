@@ -1,9 +1,9 @@
-export interface Encrypted {
+interface Encrypted {
 	hash: string;
 	salt: string;
 }
 
-export interface JWTReturnData {
+interface JWTReturnData {
 	token: string,
 	refreshToken: string,
 }
